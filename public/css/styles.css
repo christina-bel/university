@@ -1,0 +1,341 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabriela&family=Roboto+Slab&display=swap');
+
+body{
+    margin: 0;
+    padding: 1em 2em;
+    font-family: 'Roboto Slab', serif;
+    background-color: #e8f4f8;
+}
+
+/* Main page */
+
+nav{
+    display:flex;
+    justify-content: space-between;
+    margin-bottom: 3em;
+}
+
+a{
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo{
+  margin:auto 0;
+  font-size: 2.3em;
+  font-weight: bold;
+  color: black;
+}
+
+ul{
+  list-style: none;
+  margin: 0;
+}
+
+.nav-ul{
+  display:flex;
+  justify-content: space-between;
+  padding: .2em;
+}
+
+.nav-ul li{
+  margin-left: 1.5em;
+}
+
+.nav-ul a{
+    font-family: 'Gabriela', serif;
+    font-size: 1em;
+    font-weight: 500;
+    color: #2d4151;
+}
+
+.main-div{
+  display:flex;
+  justify-content: space-evenly;
+  padding-top: .8em;
+  margin: auto 3em;
+}
+
+.contacts-div,.about-div, .faq-div{
+  display:flex;
+  justify-content: center;
+  padding-top: 1.8em;
+  margin: auto 3em;
+}
+
+img{
+  width:30.4em;
+  height:38.8em;
+}
+
+.main-heading, .contacts-heading, .about-heading, .faq-heading {
+   display:flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+}
+
+.about-heading{
+    padding-right: .7em;
+}
+
+.about-h1{
+    margin-top: -0.3em;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-h1{
+  font-size: 2.7em;
+  color:#2d4151;
+  margin-bottom: .5em;
+  font-family: 'Gabriela', serif;
+}
+
+.faq-h1 {
+    margin-top: -0.2em;
+}
+
+.contacts-h1, .about-h1, .faq-h1{
+  font-size: 2.3em;
+  color:#2d4151;
+  margin-bottom: .5em;
+  font-family: 'Gabriela', serif;
+}
+
+.main-heading p{
+  font-size: 1.6em;
+  margin-top: 1.3em;
+  padding-bottom: 1em;
+  color: black;
+  text-align: center;
+  max-width: 19em;
+  line-height: 1.4em;
+}
+
+.contacts-heading p{
+  font-size: 1em;
+  margin-top: .7em;
+  padding: 2em 1.5em;
+  color: black;
+  text-align: center;
+  max-width: 39em;
+  line-height: 1.9em;
+  border:3px dashed #96bed6;
+}
+
+.about-heading p{
+  font-size: 1em;
+  margin-top: 0;
+  padding: 0 1.5em;
+  color: black;
+  text-align: center;
+  max-width: 35em;
+  line-height: 1.8em;
+  border:3px dashed #b9e3f1;
+}
+
+.faq {
+    font-size: 1em;
+    margin-top: 0;
+    color: black;
+    text-align: justify;
+    line-height: 1.9em;
+}
+
+.faq p{
+    margin-bottom: 3em;
+}
+
+.btn{
+    color: white;
+    background: #96bed6;
+    border-radius: 5px;
+    padding: .7em 1.2em;
+    font-weight: 400;
+    font-size: 1.1em;
+    font-family: 'Gabriela', serif;
+}
+
+/* Tables */
+
+table{
+  text-align: center;
+  color: #2d4151;
+  background-color: #96bed6;
+}
+
+.tab-links {
+   padding-top: 2em;
+   display:flex;
+   justify-content: center;
+   transition: 0.2s;
+}
+
+
+.tab-links button{
+    cursor: pointer;
+    color: #2d4151;
+    background-color: #96bed6;
+    border-radius: 5px;
+    font-size: .8em;
+    font-family: 'Gabriela', serif;
+    margin: auto -.15em;
+    border-color: #2d4151;
+}
+
+.tab-links button:hover {
+  background-color: white;
+}
+
+.tables {
+    font-size: 1.05em;
+    display: none;
+}
+
+#tables-heading{
+    color: #2d4151;
+    font-family: 'Gabriela', serif;
+    font-size: 1.8em;
+}
+
+.arrows {
+   display:flex;
+   align-items: center;
+}
+
+.arrows img {
+    width:1.5em;
+    height:1.5em;
+    margin: auto 1em;
+}
+
+.img-delete {
+    width: .95em;
+    height: 1.3em;
+}
+.img-update {
+    width: .95em;
+    height: 1.3em;
+}
+
+/* New element for the database*/
+.newOne{
+  color: #2d4151;
+  border:3px dashed #96bed6;
+  font-family: 'Gabriela', serif;
+  font-weight: bold;
+  font-size: 1em;
+  margin: .3em auto;
+  padding:.5em;
+  background-color:  #e8f4f8;
+  cursor: pointer;
+  float: left;
+}
+
+/* Подтверждение добавления/удаления/изменения */
+* {box-sizing: border-box}
+
+form{
+  display:grid;
+  text-align: center;
+}
+
+h3 {
+    font-family: 'Gabriela', serif;
+    color: #2d4151;
+    font-size: 1.2em;
+}
+
+.form-control-bottom {
+  padding: 1em;
+  width:36%;
+  margin:.1em auto;
+  display: inline-block;
+  border: none;
+  font-family: 'Gabriela', serif;
+  background: white;
+  color: #2d4151;
+  -webkit-appearance:none;
+}
+
+.btn-general, .cancelbtn{
+  padding: .5em;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 19%;
+  font-weight: 400;
+  font-size: .9em;
+  font-family: 'Gabriela', serif;
+  margin:.3em .15em 0;
+  text-align: center;
+}
+
+.btn-general:hover, .cancelbtn:hover {
+    background-color: white;
+}
+
+/* Дополнительные стили для кнопки */
+.btn-general {
+    color: #2d4151;
+    background-color: #96bed6;
+    border-color: #2d4151;
+}
+
+.cancelbtn {
+  background-color: #d6ad96;
+  color: #513a2d;
+  border-color: #513a2d;
+}
+
+/* Добавить отступы к элементам контейнера */
+.container {
+  padding: 1.7em;
+}
+
+/* Модальный (фон) */
+.modal {
+  display: none; /* Скрыто по умолчанию */
+  position: fixed; /* Оставаться на месте */
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%; /* Полная ширина */
+  height: 100%; /* Полный высота */
+  overflow: auto; /* Включите прокрутку, если это необходимо */
+  background-color: #474e5d;
+  padding-top: 6em;
+}
+
+/* Модальное Содержание/Бокс */
+.modal-content {
+  border:4px dashed #96bed6;
+  background-color: #fefefe;
+  margin: 7% auto 10% auto; /* 5% сверху, 10% снизу и по центру */
+  width: 50%; /* Может быть больше или меньше, в зависимости от размера экрана */
+}
+
+/* кнопка закрытия (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover, .close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Снимите поплавки */
+/*
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}*/
+

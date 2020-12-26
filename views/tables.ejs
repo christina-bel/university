@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title><%=Title%></title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+        <link rel="stylesheet" href="/css/styles.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    </head>
+    <body>
+        <nav>
+            <a class="logo" href="/">University</a>
+            <ul class="nav-ul">
+              <li><a href="./about">Об университете</a></li>
+              <li><a href="./contacts">Контакты</a></li>
+              <li><a href="./faq">FAQ</a></li>
+            </ul>
+        </nav>
+
+
+<!-- Tab buttons -->
+<div class="tab-links">
+<button id="firstbtn" onclick="openTable('professor')">Преподаватели</button>
+ <div class="arrows">
+  <img src="images/left-arrow.png" alt="">
+  <h2 id="tables-heading">Расписание</h2>
+  <img src="images/right-arrow.png" alt="">
+ </div>
+ <button id="secondbtn" onclick="openTable('discipline')">Дисциплины</button>
+</div>
+
+
+<!-- TIMETABLE -->
+<div class="tables"  id="tables-timetable" >
+   <table id="timetable" cellspacing ="20">
+     <thead>
+       <tr>
+         <th>ID</th>
+         <th>Дата/время</th>
+         <th>Название дисциплины</th>
+         <th>Группа</th>
+         <th>Аудитория</th>
+         <th>Тип занятия</th>
+         <th>Преподаватель</th>
+         <th>Изменить</th>
+         <th>Удалить</th>
+       </tr>
+     </thead>
+     <tbody>
+        <% for (var i = 0; i < classData.length; i++) {  %>
+            <tr>
+                <td><%=classData[i].idClass%></td>
+                <td><%=classData[i].Time%></td>
+                <% for(var j = 0; j < disciplineData.length; j++){ %>
+                    <% if (classData[i].idDiscipline === disciplineData[j].idDiscipline){ %>
+                        <td><%=disciplineData[j].Title%></td>
+                    <%}%>
+                <%}%>
+                <td><%=classData[i].GroupName%></td>
+                <td><%=classData[i].Classroom%></td>
+                <td><%=classData[i].Type%></td>
+                <% for(var j = 0; j < professorData.length; j++){ %>
+                     <% if (classData[i].idProfessor === null){ %>
+                        <td><%='—'%></td>
+                        <% break; %>
+                    <%}%>
+                    <% if (classData[i].idProfessor === professorData[j].idProfessor){ %>
+                        <td><%=professorData[j].FullName%></td>
+                    <%}%>
+                <%}%>
+                <td>
+                <button type ="submit" onclick="document.getElementById('updClass_<%=classData[i].idClass%>').style.display='block'" name="upd_btn_<%=i%>">
+                    <img class="img-update" src="images/pencil.png" alt="">
+                </button>
+                <!-- Update class -->
+                <div id="updClass_<%=classData[i].idClass%>%>" class="modal">
+                <span onclick="closeForm('updClass_<%=classData[i].idClass%>')" class="close" title="Закрыть модальный">&times;</span>
+                      <form class="modal-content" id="form-updClass_<%=classData[i].idClass%>" action="/updateClass/<%=classData[i].idClass%>" method="POST">
+                        <h3>Изменить информацию о паре</h3>
+                        <input type="text" class="form-control-bottom" pattern="^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (00|[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9]):([0-9]|[0-5][0-9])$" name="Time" value="<%=classData[i].Time%>" placeholder="Дата/время YYYY-MM-DD HH:MM:SS" oninvalid="this.setCustomValidity('Неверный формат: YYYY-MM-DD HH:MM:SS')" onchange="this.setCustomValidity('')" required>
+                        <select required class="form-control-bottom" name="idDiscipline">
+                            <option value="" disabled>Название дисциплины</option>
+                            <% for(var j = 0; j < disciplineData.length; j++) { %>
+                            <option value='<%= disciplineData[j].idDiscipline %>' <%if (classData[i].idDiscipline === disciplineData[j].idDiscipline) { %> selected <% } %>   ><%=disciplineData[j].Title%></option>
+                             <% } %>
+                        </select>
+                        <input type="text" class="form-control-bottom" maxlength="15" value="<%=classData[i].GroupName%>" name = "GroupName" placeholder="Группы" required>
+                        <input type="text"  class="form-control-bottom" maxlength="10" value="<%=classData[i].Classroom%>" name = "Classroom" placeholder="Аудитория" required>
+                        <input type="text"  class="form-control-bottom" maxlength="15" value="<%=classData[i].Type%>" name = "Type" placeholder="Тип занятия"required>
+                        <select class="form-control-bottom" name="idProfessor">
+                                <option value="nan">Преподаватель</option>
+                                <% for(var j = 0; j < professorData.length; j++) { %>
+                                <option value='<%= professorData[j].idProfessor %>' <%if (classData[i].idProfessor === professorData[j].idProfessor) { %> selected <% } %>  ><%=professorData[j].FullName%></option>
+                                <% } %>
+                        </select>
+                        <div class="container">
+                           <button type="button" class="btn-general cancelbtn" onclick="closeForm('updClass_<%=classData[i].idClass%>')">Отменить</button>
+                           <button type="submit" class="btn-general" >Сохранить</button>
+                        </div>
+                     </form>
+                </div>
+               </td>
+              <td>
+               <button type ="submit" onclick="document.getElementById('delClass_<%=classData[i].idClass%>').style.display='block'" name="del_btn_<%=i%>">
+                    <img class="img-delete" src="images/delete.png" alt="">
+                </button>
+                <!-- Delete class -->
+                <div id="delClass_<%=classData[i].idClass%>" class="modal">
+                <span onclick="document.getElementById('delClass_<%=classData[i].idClass%>').style.display='none'" class="close" title="Закрыть модальный">&times;</span>
+                      <form class="modal-content" action="/deleteClass/<%=classData[i].idClass%>" method="POST">
+                        <div class="container">
+                            <h3>Удалить пару</h3>
+                            <p>Вы уверены, что хотите удалить пару из базы данных?</p>
+                            <div class="clearfix">
+                                <button type="button" class="btn-general cancelbtn" onclick="document.getElementById('delClass_<%=classData[i].idClass%>').style.display='none'">Нет</button>
+                                <button type="submit" class="btn-general" >Да</button>
+                            </div>
+                        </div>
+                     </form>
+                </div>
+              </td>
+            </tr>
+        <% } %>
+     </tbody>
+   </table>
+   
+   <!-- Add new class -->
+   <!-- Кнопка для открытия модального -->
+   <button class="newOne" onclick="document.getElementById('newClass').style.display='block'">Добавить</button>
+    <!-- Модальный (содержит форму регистрации) -->
+    <div id="newClass" class="modal">
+    <span onclick="closeForm('newClass')" class="close" title="Закрыть модальный">&times;</span>
+    <form class="modal-content" id="form-newClass" action="/class" method="post">
+        <h3>Новое занятие</h3>
+        <input type="text" class="form-control-bottom" pattern="^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (00|[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9]):([0-9]|[0-5][0-9])$" name="Time" placeholder="Дата/время YYYY-MM-DD HH:MM:SS" oninvalid="this.setCustomValidity('Неверный формат: YYYY-MM-DD HH:MM:SS')" onchange="this.setCustomValidity('')" required>
+        <select required class="form-control-bottom" name="idDiscipline">
+                <option value="" disabled selected>Название дисциплины</option>
+                <% for(var i = 0; i < disciplineData.length; i++) { %>
+                        <option value='<%= disciplineData[i].idDiscipline %>'><%=disciplineData[i].Title%></option>
+                <% } %>
+        </select>
+        <input type="text" class="form-control-bottom" maxlength="15" name = "GroupName" placeholder="Группы" required>
+        <input type="text" class="form-control-bottom" maxlength="10" name = "Classroom" placeholder="Аудитория"  required>
+        <input type="text" class="form-control-bottom" maxlength="15" name = "Type" placeholder="Тип занятия" required>
+        <select class="form-control-bottom" name="idProfessor">
+                <option value="nan" selected>Преподаватель</option>
+                <% for(var i = 0; i < professorData.length; i++) { %>
+                        <option value='<%= professorData[i].idProfessor %>'><%=professorData[i].FullName%></option>
+                <% } %>
+        </select>
+    <div class="container">
+      <div class="clearfix">
+        <button type="button" onclick="closeForm('newClass')" class="cancelbtn">Отменить</button>
+        <button class="btn-general" type="submit">Добавить</button>
+      </div>
+    </div>
+    </form>
+</div>
+</div>
+
+
+
+
+<!-- PROFESSORS -->
+<div class="tables" id="tables-professor">
+  <table id="professor" cellspacing ="20">
+     <thead>
+       <tr>
+         <th>ID</th>
+         <th>ФИО</th>
+         <th>Кафедра</th>
+         <th>Должность</th>
+        <th>Учёная степень</th>
+        <th>Изменить</th>
+        <th>Удалить</th>
+       </tr>
+     </thead>
+     <tbody>
+        <% for (var i = 0; i < professorData.length; i++) {  %>
+            <tr>
+                <td><%=professorData[i].idProfessor%></td>
+                <td><%=professorData[i].FullName%></td>
+                <td><%=professorData[i].Department%></td>
+                <td><%=professorData[i].Position%></td>
+                <td><%=professorData[i].Degree ? professorData[i].Degree : '—' %></td>
+                <td>
+                <button type ="submit" onclick="document.getElementById('updProfessor_<%= professorData[i].idProfessor %>').style.display='block'" name="upd_btn_<%=i%>">
+                    <img class="img-update" src="images/pencil.png" alt="">
+                </button>
+                <!-- Update professor -->
+                <div id="updProfessor_<%= professorData[i].idProfessor %>" class="modal">
+                <span onclick="closeForm('updProfessor_<%= professorData[i].idProfessor %>')" class="close" title="Закрыть модальный">&times;</span>
+                      <form id="form-updProfessor_<%= professorData[i].idProfessor %>" class="modal-content" action="/updateProfessor/<%= professorData[i].idProfessor %>" method="POST">
+                        <h3>Изменить информацию о преподавателе</h3>
+                        <input type="text" class="form-control-bottom" maxlength="100" name = "FullName" value="<%=professorData[i].FullName%>" placeholder="ФИО" required>
+                        <input type="text" class="form-control-bottom" maxlength="60" value="<%=professorData[i].Department%>" name = "Department" placeholder="Кафедра" required>
+                        <input type="text"  class="form-control-bottom" maxlength="60" value="<%=professorData[i].Position%>" name = "Position" placeholder="Должность"  required>
+                        <input type="text"  class="form-control-bottom" maxlength="60" value="<%=professorData[i].Degree%>" name = "Degree" placeholder="Учёная степень" >
+                        <div class="container">
+                           <button type="button" class="btn-general cancelbtn" onclick="closeForm('updProfessor_<%= professorData[i].idProfessor %>')">Отменить</button>
+                           <button type="submit" class="btn-general" >Сохранить</button>
+                        </div>
+                     </form>
+                </div>
+               </td>
+               <td>
+                <button type ="submit" onclick="document.getElementById('delProfessor_<%= professorData[i].idProfessor %>').style.display='block'" name="del_btn_<%=i%>">
+                    <img class="img-delete" src="images/delete.png" alt="">
+                </button>
+                <!-- Delete professor -->
+                <div id="delProfessor_<%= professorData[i].idProfessor %>" class="modal">
+                <span onclick="document.getElementById('delProfessor_<%= professorData[i].idProfessor %>').style.display='none'" class="close" title="Закрыть модальный">&times;</span>
+                      <form class="modal-content" action="/deleteProfessor/<%= professorData[i].idProfessor %>" method="POST">
+                        <div class="container">
+                            <h3>Удалить преподавателя</h3>
+                            <p>Вы уверены, что хотите удалить преподавателя из базы данных?</p>
+                            <div class="clearfix">
+                                <button type="button" class="btn-general cancelbtn" onclick="document.getElementById('delProfessor_<%= professorData[i].idProfessor %>').style.display='none'">Нет</button>
+                                <button type="submit" class="btn-general" >Да</button>
+                            </div>
+                        </div>
+                     </form>
+                </div>
+              </td>
+            </tr>
+     <% } %>
+   </tbody>
+  </table>
+
+<!-- Add new professor -->
+<!-- Кнопка для открытия модального -->
+<button class="newOne" onclick="document.getElementById('newProfessor').style.display='block'">Добавить</button>
+<!-- Modal -->
+<div id="newProfessor" class="modal">
+    <span onclick="closeForm('newProfessor')" class="close" title="Закрыть модальный">&times;</span>
+    <form class="modal-content" id="form-newProfessor" action="/professor" method="post">
+        <h3>Новый преподаватель</h3>
+        <input type="text" class="form-control-bottom" maxlength="100" name = "FullName" placeholder="ФИО" required>
+        <input type="text"  class="form-control-bottom" maxlength="60" name = "Department" placeholder="Кафедра"  required>
+        <input type="text"  class="form-control-bottom" maxlength="60" name = "Position" placeholder="Должность"  required>
+        <input type="text"  class="form-control-bottom" maxlength="60" name = "Degree" placeholder="Учёная степень" >
+    <div class="container">
+      <div class="clearfix">
+        <button type="button" onclick="closeForm('newProfessor')" class="cancelbtn">Отменить</button>
+        <button class="btn-general" type="submit">Добавить</button>
+      </div>
+    </div>
+    </form>
+</div>
+</div>
+
+
+
+<!-- DISCIPLINE -->
+<div class="tables" id="tables-discipline">
+  <table id="discipline" cellspacing ="20">
+     <thead>
+       <tr>
+         <th>ID</th>
+         <th>Наименование</th>
+         <th>Число часов</th>
+         <th>Вид проверки</th>
+         <th>Обязательность</th>
+         <th>Изменить</th>
+        <th>Удалить</th>
+       </tr>
+     </thead>
+     <tbody>
+        <% for (var i = 0; i < disciplineData.length; i++) {  %>
+            <tr>
+               <td><%=disciplineData[i].idDiscipline%></td>
+               <td><%=disciplineData[i].Title%></td>
+               <td><%=disciplineData[i].Hours%></td>
+               <td><%=disciplineData[i].ControlType%></td>
+               <td><%=Boolean(disciplineData[i].Mandatory) ? "Да" : "Нет" %></td>
+               <td>
+                <button type ="submit" onclick="document.getElementById('updDiscipline_<%=disciplineData[i].idDiscipline%>').style.display='block'" name="upd_btn_<%=i%>">
+                    <img class="img-update" src="images/pencil.png" alt="">
+                </button>
+                <!-- Update discipline -->
+                <div id="updDiscipline_<%=disciplineData[i].idDiscipline%>" class="modal">
+                <span onclick="closeForm('updDiscipline_<%=disciplineData[i].idDiscipline%>')" class="close" title="Закрыть модальный">&times;</span>
+                      <form id="form-updDiscipline_<%=disciplineData[i].idDiscipline%>" class="modal-content" action="/updateDiscipline/<%=disciplineData[i].idDiscipline%>" method="POST">
+                        <h3>Изменить информацию о дисциплине</h3>
+                        <input type="text" class="form-control-bottom" maxlength="45" name = "Title" value="<%=disciplineData[i].Title%>" placeholder="Наименование" required>
+                        <input type="number"  class="form-control-bottom" min="1" value="<%=disciplineData[i].Hours%>" name = "Hours" placeholder="Число часов" required>
+                        <select required class="form-control-bottom" name="ControlType">
+                            <option value="" disabled>Вид проверки</option>
+                            <option value="Экзамен" <%if (disciplineData[i].ControlType === "Экзамен") { %> selected <% } %> >Экзамен</option>
+                            <option value="Зачет с оценкой" <%if (disciplineData[i].ControlType === "Зачет с оценкой") { %> selected <% } %> >Зачет с оценкой</option>
+                            <option value="Зачет" <%if (disciplineData[i].ControlType === "Зачет") { %> selected <% } %> >Зачет</option>
+                        </select>
+                        <select required class="form-control-bottom" name="Mandatory">
+                                    <option value="" disabled>Обязательность</option>
+                                    <option value="1" <%if (Boolean(disciplineData[i].Mandatory) === true) { %> selected <% } %> >Да</option>
+                                    <option value="0" <%if (Boolean(disciplineData[i].Mandatory) === false) { %> selected <% } %> >Нет</option>
+                        </select>
+                        <div class="container">
+                           <button type="button" class="btn-general cancelbtn" onclick="closeForm('updDiscipline_<%=disciplineData[i].idDiscipline%>')">Отменить</button>
+                           <button type="submit" class="btn-general" >Сохранить</button>
+                        </div>
+                     </form>
+                </div>
+               </td>
+               <td>
+               <button type ="submit" onclick="document.getElementById('delDiscipline_<%=disciplineData[i].idDiscipline%>').style.display='block'" name="del_btn_<%=i%>">
+                    <img class="img-delete" src="images/delete.png" alt="">
+                </button>
+                <!-- Delete discipline -->
+                <div id="delDiscipline_<%=disciplineData[i].idDiscipline%>" class="modal">
+                <span onclick="document.getElementById('delDiscipline_<%=disciplineData[i].idDiscipline%>').style.display='none'" class="close" title="Закрыть модальный">&times;</span>
+                      <form class="modal-content" action="/deleteDiscipline/<%=disciplineData[i].idDiscipline%>" method="POST">
+                            <h3>Удалить дисциплину</h3>
+                            <p>Вы уверены, что хотите удалить дисциплину из базы данных?</p>
+                            <div class="container">
+                                <button type="button" class="btn-general cancelbtn" onclick="document.getElementById('delDiscipline_<%=disciplineData[i].idDiscipline%>').style.display='none'">Нет</button>
+                                <button type="submit" class="btn-general" >Да</button>
+                            </div>
+                     </form>
+                </div>
+              </td>
+            </tr>
+     <% } %>
+   </tbody>
+  </table>
+  
+  
+<!-- Add new discipline -->
+<!-- Кнопка для открытия модального -->
+<button class="newOne" onclick="document.getElementById('newDiscipline').style.display='block'">Добавить</button>
+<!-- Modal -->
+<div id="newDiscipline" class="modal">
+    <span onclick="closeForm('newDiscipline')" class="close" title="Закрыть модальный">&times;</span>
+    <form class="modal-content" id="form-newDiscipline" action="/discipline" method="post">
+        <h3>Новая дисциплина</h3>
+        <input type="text" class="form-control-bottom" maxlength="45" name = "Title" placeholder="Наименование" required>
+        <input type="number"  class="form-control-bottom" min="1" name = "Hours" placeholder="Число часов"  required>
+        <select required class="form-control-bottom" name="ControlType">
+                <option value="" disabled selected>Вид проверки</option>
+                <option value="Экзамен">Экзамен</option>
+                <option value="Зачет с оценкой">Зачет с оценкой</option>
+                <option value="Зачет">Зачет</option>
+        </select>
+        <select required class="form-control-bottom" name="Mandatory">
+                <option value="" disabled selected>Обязательность</option>
+                <option value="1">Да</option>
+                <option value="0">Нет</option>
+        </select>
+    <div class="container">
+        <button type="button" onclick="closeForm('newDiscipline')" class="cancelbtn">Отменить</button>
+        <button class="btn-general" type="submit">Добавить</button>
+    </div>
+    </form>
+</div>
+</div>
+
+    <script type="text/javascript">
+    
+        // Show the default element with id="tables-timetable"
+        $(document).ready(function() {
+                document.getElementById('tables-timetable').style.display = "block";
+                $('#timetable').DataTable();
+        })
+      
+        function openTable(tableName) {
+            var tables, new_text, first_button, second_button, actions;
+
+            // Hide all tables
+            tables = document.getElementsByClassName("tables");
+            for (var i = 0; i < tables.length; i++) {
+                tables[i].style.display = "none";
+            }
+
+            // Show the current table
+            document.getElementById('tables-'+tableName).style.display = "block";
+            $(document.getElementById(tableName)).DataTable();
+                
+            // Change buttons and title of the table
+            switch(tableName) {
+                 case 'professor':
+                       new_text = 'Преподаватели';
+                       first_button = 'Расписание';
+                       second_button = 'Дисциплины';
+                       actions = ['timetable', 'discipline'];
+                       break;
+
+                 case 'discipline':
+                       new_text = 'Дисциплины';
+                       first_button = 'Преподаватели';
+                       second_button = 'Расписание';
+                       actions = ['professor', 'timetable'];
+                       break;
+                    
+                default:
+                       new_text = 'Расписание';
+                       first_button = 'Преподаватели';
+                       second_button = 'Дисциплины';
+                       actions = ['professor', 'discipline'];
+                       break;
+                }
+            document.getElementById('tables-heading').textContent = new_text;
+            document.getElementById('firstbtn').textContent = first_button;
+            document.getElementById('firstbtn').onclick = function () { openTable(actions[0]); };
+            document.getElementById('secondbtn').textContent = second_button;
+            document.getElementById('secondbtn').onclick = function () { openTable(actions[1]); };
+                
+        }
+        
+        // очищение и закрытие формы
+        function closeForm(id) {
+            document.getElementById(id).style.display='none';
+            document.getElementById('form-'+id).reset();
+        }
+            
+    </script>
+    
+  </body>
+</html>
