@@ -70,12 +70,6 @@ app.get("/tables", function(req,res) {
 
 // Новый преподаватель
 app.post("/professor", function(req,res) {
-    /*
-    var fullName = req.body.FullName;
-    var department = req.body.Department;
-    var position = req.body.Position;
-    var degree = req.body.Degree;
-    let professor = {FullName: fullName, Department:department, Position: position, Degree:degree};*/
     let sql = 'INSERT INTO Professor SET ?';
     let query = connection.query(sql, req.body, function(err, result){
       if(err) console.log(err.message);
@@ -101,11 +95,6 @@ app.post("/deleteProfessor/:id", function(req,res){
 
 // изменение преподавателя
 app.post("/updateProfessor/:id", function(req,res) {
-    /*var fullName = req.body.FullName;
-    var department = req.body.Department;
-    var position = req.body.Position;
-    var degree = req.body.Degree;
-    let professor = {FullName: fullName, Department:department, Position: position, Degree:degree};*/
     let sql = `UPDATE Professor SET ? WHERE idProfessor = ${req.params.id}`;
     let query = connection.query(sql, req.body, function(err, result){
       if(err) console.log(err.message);
@@ -118,11 +107,6 @@ app.post("/updateProfessor/:id", function(req,res) {
 
 // Новая дисциплина
 app.post("/discipline", function(req,res) {
-    /*var title = req.body.Title;
-    var hours = req.body.Hours;
-    var controlType = req.body.ControlType;
-    var mandatory = req.body.Mandatory;
-    let discipline = {Title: title, Hours:hours, ControlType: controlType, Mandatory:mandatory};*/
     let sql = 'INSERT INTO Discipline SET ?';
     let query = connection.query(sql, req.body, function(err, result){
       if(err) console.log(err.message);
@@ -148,11 +132,6 @@ app.post("/deleteDiscipline/:id", function(req,res){
 
 // изменение дисциплина
 app.post("/updateDiscipline/:id", function(req,res) {
-    /*var title = req.body.Title;
-    var hours = req.body.Hours;
-    var controlType = req.body.ControlType;
-    var mandatory = req.body.Mandatory;
-    let discipline = {Title: title, Hours:hours, ControlType: controlType, Mandatory:mandatory};*/
     let sql = `UPDATE Discipline SET ? WHERE idDiscipline = ${req.params.id}`;
     let query = connection.query(sql, req.body, function(err, result){
       if(err) console.log(err.message);
