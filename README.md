@@ -4,6 +4,5 @@ This project shows basic CRUD (Create, Read, Update and Delete) functionality. T
 'Professor', 'Class'.
 
 
-For the database MySQl is used, Node.js is used for the server-side, HTML/CSS/JS - for the frond-end. DataTables plug-in for the jQuery Javascript library helps to show tables
-in the proper way (providing searching, sorting and pagination).  
+For the database  management MySQL is used. Node.js is used for the server-side, HTML/CSS/JS - for the frond-end. DataTables plug-in for the jQuery Javascript library helps to show tables in the proper way (providing searching, sorting and pagination).  
 
